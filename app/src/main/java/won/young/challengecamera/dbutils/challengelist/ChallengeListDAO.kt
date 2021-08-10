@@ -10,7 +10,7 @@ const val KIND = "kind"
 class ChallengeListDAO (private val database: SQLiteDatabase) {
 
     fun getChallengeList(): ArrayList<ChallengeListDTO>{
-        val sql = "select * from challengeList"
+        val sql = "select * from $CHALLENGE_LIST"
         val result = database.rawQuery(sql, null)
         var challengeList: ArrayList<ChallengeListDTO> = arrayListOf()
         while (result.moveToNext()) {
@@ -31,6 +31,12 @@ class ChallengeListDAO (private val database: SQLiteDatabase) {
 
         var result = database.insert(CHALLENGE_LIST, null, data)
         return result != -1L
+    }
+
+    fun isDuplicated(name: String): Boolean {
+        val sql = "select * from ${CHALLENGE_LIST} where ${CHALLENGE_NAME}=\"${name}\""
+        val result = database.rawQuery(sql, null)
+        return result.count != 0
     }
 
     fun deleteChallengeList(challengeName: String): Boolean{

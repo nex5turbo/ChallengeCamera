@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Challenge Camera</string>
     <string name="addChallengeList">챌린지 추가</string>
+    <string name="addChallengeName">챌린지 이름</string>
+    <string name="addChallengeKind">카운트 방식</string>
+    <string name="addChallengeNameHint">최대 10글자(수정불가)</string>
 </resources>
