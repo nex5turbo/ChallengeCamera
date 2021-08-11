@@ -12,7 +12,9 @@ class DBHelper(
 ): SQLiteOpenHelper(context, name, factory, version){
     override fun onCreate(db: SQLiteDatabase) {
         val challengeList = "create table if not exists challengeList("+
-                "challengeName text primary key, date text, kind integer);"
+                "challengeName text primary key, startDate text, endDate text, kind integer," +
+                "isAlarmOn integer, isHideOn integer, alarmAmPm integer, alarmTime integer, alarmMinute integer);"
+
 
         db.execSQL(challengeList)
     }

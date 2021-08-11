@@ -1,9 +1,12 @@
 package won.young.challengecamera
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import won.young.challengecamera.databinding.ActivityMainBinding
@@ -11,8 +14,11 @@ import won.young.challengecamera.dbutils.DBHelper
 import won.young.challengecamera.dbutils.challengelist.ChallengeListDAO
 import won.young.challengecamera.dbutils.challengelist.ChallengeListDTO
 import won.young.challengecamera.dbutils.recyclerview.challengelist.ChallengeListRecyclerViewAdapter
+import java.io.File
+
 
 const val DATABASE_NAME = "challenge.db"
+const val APP_NAME = "ChallengeCamera"
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -25,9 +31,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+        checkDirectory()
+
         dbHelper = DBHelper(this, DATABASE_NAME, null, 1)
         database = ChallengeListDAO(dbHelper.writableDatabase)
-
 
         binding.addChallengeListButton.setOnClickListener {
             val addIntent = Intent(this, AddChallengeActivity::class.java)
@@ -38,7 +45,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         Log.d("###", "onResume()")
         challengeListDTOs = database.getChallengeList()
-        adapter = ChallengeListRecyclerViewAdapter(this, challengeListDTOs)
+        adapter = ChallengeListRecyclerViewAdapter(database,this, challengeListDTOs)
         binding.challengeListRecyclerView.adapter = adapter
         binding.challengeListRecyclerView.layoutManager = LinearLayoutManager(this)
         Log.d("###size", challengeListDTOs.size.toString())
@@ -67,5 +74,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onRestart() {
         super.onRestart()
+    }
+
+    private fun checkDirectory(){
+        val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString() + File.separator + "$APP_NAME" + File.separator
+        val file = File(path)
+        if (file.exists()) return
+
+        if (!file.mkdirs()) {
+            Toast.makeText(this, "앱 폴더 생성에 에러가 발생했습니다. 앱을 재시작해주세요.", Toast.LENGTH_SHORT).show()
+        }
     }
 }

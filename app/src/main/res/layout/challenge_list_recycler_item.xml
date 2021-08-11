@@ -1,23 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+    <RelativeLayout
+        android:paddingVertical="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/challengeNameTextView"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:text="운동하기챌린지입니다"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:layout_marginStart="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
-    <TextView
-        android:id="@+id/challengeNameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/dateTextView"
+            android:layout_alignParentEnd="true"
+            android:text="D-365"
+            android:textSize="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
-    <TextView
-        android:id="@+id/dateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/alarmTextView"
+            android:layout_below="@id/challengeNameTextView"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="16dp"
+            android:text="알림 꺼짐"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
-    <TextView
-        android:id="@+id/kindTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
+        <TextView
+            android:id="@+id/hideTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/alarmTextView"
+            android:layout_below="@id/challengeNameTextView"
+            android:layout_marginTop="4dp"
+            android:layout_marginStart="16dp"
+            android:text="사진 숨김"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black"/>
 </LinearLayout>

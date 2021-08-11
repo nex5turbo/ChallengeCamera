@@ -17,7 +17,7 @@
             android:id="@+id/logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:text="@string/app_name" />
 
         <LinearLayout
@@ -31,40 +31,173 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/addChallengeNameTextView"
-                android:text="@string/addChallengeName"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
-                android:textSize="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/addChallengeNameEditText"
+            <RelativeLayout
+                android:id="@+id/nameContainer"
+                android:layout_marginTop="16dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLength="10"
-                android:hint="@string/addChallengeNameHint"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="32dp"
-                android:layout_toEndOf="@id/addChallengeNameTextView" />
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/addChallengeKindTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/addChallengeKind"
-                android:textSize="20dp"
-                android:layout_alignParentStart="true"
+                <TextView
+                    android:id="@+id/addChallengeNameTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/addChallengeName"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/addChallengeNameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:maxLength="10"
+                    android:hint="@string/addChallengeNameHint"
+                    android:layout_toEndOf="@id/addChallengeNameTextView" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/kindContainer"
                 android:layout_marginTop="48dp"
-                android:layout_marginStart="16dp"
-                android:layout_below="@id/addChallengeNameTextView"/>
+                android:layout_below="@id/nameContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/addChallengeKindTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/addChallengeKind"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+                <Spinner
+                    android:id="@+id/addChallengeSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/addChallengeKindTextView"
+                    android:entries="@array/kind"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/startDateContainer"
+                android:layout_marginTop="48dp"
+                android:layout_below="@id/kindContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/addChallengeStartDateTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/addChallengeStartDate"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/addChallengeStartDateButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/addChallengeStartDateTextView"
+                    android:text="@string/addChallengeDatePick"
+                    android:layout_marginHorizontal="16dp"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/endDateContainer"
+                android:layout_marginTop="48dp"
+                android:layout_below="@id/startDateContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/addChallengeEndDateTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/addChallengeEndDate"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/addChallengeEndDateButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/addChallengeEndDateTextView"
+                    android:text="@string/addChallengeDatePick"
+                    android:layout_marginHorizontal="16dp"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/timeContainer"
+                android:layout_marginTop="48dp"
+                android:layout_below="@id/endDateContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/addChallengeTimeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/addChallengeTime"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/addChallengeTimeButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/addChallengeTimeTextView"
+                    android:text="@string/addChallengeTimePick"
+                    android:layout_toStartOf="@id/addChallengeTimeCheckBox"
+                    android:layout_marginHorizontal="16dp"/>
+
+                <CheckBox
+                    android:id="@+id/addChallengeTimeCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/hideContainer"
+                android:layout_marginTop="32dp"
+                android:layout_below="@id/timeContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/addChallengeHide"
+                    android:textColor="#000000"
+                    android:textSize="14sp" />
+                <CheckBox
+                    android:id="@+id/addChallengeHideCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true" />
+            </RelativeLayout>
+
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/addChallengeAddButton"
