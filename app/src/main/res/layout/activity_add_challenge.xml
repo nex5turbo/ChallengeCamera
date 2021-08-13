@@ -136,6 +136,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/addChallengeEndDateTextView"
+                    android:enabled="false"
                     android:text="@string/addChallengeDatePick"
                     android:layout_marginHorizontal="16dp"/>
 
@@ -164,6 +165,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/addChallengeTimeTextView"
+                    android:enabled="false"
                     android:text="@string/addChallengeTimePick"
                     android:layout_toStartOf="@id/addChallengeTimeCheckBox"
                     android:layout_marginHorizontal="16dp"/>

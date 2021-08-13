@@ -9,7 +9,7 @@
     <string name="addChallengeTime">챌린지 알림</string>
     <string name="addChallengeDatePick">날짜 설정</string>
     <string name="addChallengeTimePick">시간 설정</string>
-    <string name="addChallengeHide">챌린지 사진을 갤러리에 공개(수정불가)</string>
+    <string name="addChallengeHide">챌린지 사진을 갤러리에서 숨김(수정불가)</string>
 
     <string name="alarmOnMessage">알림 켜짐</string>
     <string name="alarmOffMessage">알림 꺼짐</string>

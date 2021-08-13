@@ -19,9 +19,9 @@ class ChallengeListDAO (private val database: SQLiteDatabase) {
     fun getChallengeList(): ArrayList<ChallengeListDTO>{
         val sql = "select * from $CHALLENGE_LIST"
         val result = database.rawQuery(sql, null)
-        var challengeList: ArrayList<ChallengeListDTO> = arrayListOf()
+        val challengeList: ArrayList<ChallengeListDTO> = arrayListOf()
         while (result.moveToNext()) {
-            var nowDTO = ChallengeListDTO()
+            val nowDTO = ChallengeListDTO()
             nowDTO.challengeName = result.getString(result.getColumnIndex(CHALLENGE_NAME))
             nowDTO.startDate = result.getLong(result.getColumnIndex(START_DATE))
             nowDTO.endDate = result.getLong(result.getColumnIndex(END_DATE))
@@ -58,8 +58,27 @@ class ChallengeListDAO (private val database: SQLiteDatabase) {
         data.put(ALARM_TIME, alarmTime)
         data.put(ALARM_MINUTE, alarmMinute)
 
-        var result = database.insert(CHALLENGE_LIST, null, data)
+        val result = database.insert(CHALLENGE_LIST, null, data)
         return result != -1L
+    }
+
+    fun getChallenge(name: String): ChallengeListDTO?{
+        val returnDTO = ChallengeListDTO()
+        val sql = "select * from ${CHALLENGE_LIST} where ${CHALLENGE_NAME}=\"${name}\""
+        val result = database.rawQuery(sql, null)
+        if (result.count != 1) return null
+        while (result.moveToNext()) {
+            returnDTO.challengeName = result.getString(result.getColumnIndex(CHALLENGE_NAME))
+            returnDTO.startDate = result.getLong(result.getColumnIndex(START_DATE))
+            returnDTO.endDate = result.getLong(result.getColumnIndex(END_DATE))
+            returnDTO.kind = result.getInt(result.getColumnIndex(KIND))
+            returnDTO.isAlarmOn = setBoolean(result.getInt(result.getColumnIndex(IS_ALARM_ON)))
+            returnDTO.isHideOn = setBoolean(result.getInt(result.getColumnIndex(IS_HIDE_ON)))
+            returnDTO.alarmAmPm = setBoolean(result.getInt(result.getColumnIndex(ALARM_AM_PM)))
+            returnDTO.alarmTime = result.getInt(result.getColumnIndex(ALARM_TIME))
+            returnDTO.alarmMinute = result.getInt(result.getColumnIndex(ALARM_MINUTE))
+        }
+        return returnDTO
     }
 
     fun isDuplicated(name: String): Boolean {
@@ -69,8 +88,8 @@ class ChallengeListDAO (private val database: SQLiteDatabase) {
     }
 
     fun deleteChallengeList(challengeName: String): Boolean{
-        var whereArgs = arrayOf(challengeName)
-        var result = database.delete(CHALLENGE_LIST, "${CHALLENGE_NAME}=?", whereArgs)
+        val whereArgs = arrayOf(challengeName)
+        val result = database.delete(CHALLENGE_LIST, "${CHALLENGE_NAME}=?", whereArgs)
         return result != 1
     }
 

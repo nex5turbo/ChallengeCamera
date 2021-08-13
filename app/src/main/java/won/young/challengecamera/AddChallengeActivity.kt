@@ -1,11 +1,13 @@
 package won.young.challengecamera
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.os.Environment
 import android.view.View
 import android.widget.AdapterView
 import android.widget.DatePicker
+import android.widget.TimePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -36,6 +38,21 @@ class AddChallengeActivity : AppCompatActivity() {
         dbHelper = DBHelper(this, DATABASE_NAME, null, 1)
         challengeListDAO = ChallengeListDAO(dbHelper.writableDatabase)
         initListener()
+        initStartDate()
+    }
+
+    private fun initStartDate() {
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Seoul"))
+        val nowYear = calendar.get(Calendar.YEAR)
+        val nowMonth = calendar.get(Calendar.MONTH)
+        val nowDay = calendar.get(Calendar.DAY_OF_MONTH)
+
+        calendar.set(Calendar.YEAR, nowYear)
+        calendar.set(Calendar.MONTH, nowMonth)
+        calendar.set(Calendar.DAY_OF_MONTH, nowDay)
+
+        binding.addChallengeStartDateButton.text = "$nowYear ${nowMonth + 1} $nowDay"
+        startDate = calendar.timeInMillis
     }
 
     private fun initListener() {
@@ -61,12 +78,12 @@ class AddChallengeActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-//            if (isAlarmOn) {
-//                if (alarmTime == -1 || alarmMinute == -1) {
-//                    Toast.makeText(this, "알람 시간을 설정하세요.", Toast.LENGTH_SHORT).show()
-//                    return@setOnClickListener
-//                }
-//            }
+            if (isAlarmOn) {
+                if (alarmTime == -1 || alarmMinute == -1) {
+                    Toast.makeText(this, "알람 시간을 설정하세요.", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+            }
 
             challengeListDAO.insertChallengeList(name, startDate, endDate, kind, isAlarmOn, isHideOn, alarmAmPm, alarmTime, alarmMinute)
             makeDirectory(isHideOn, name)
@@ -83,10 +100,12 @@ class AddChallengeActivity : AppCompatActivity() {
                 when (position) {
                     0->{
                         kind = 0
+                        binding.addChallengeEndDateButton.isEnabled = false
                     }
 
                     1->{
                         kind = 1
+                        binding.addChallengeEndDateButton.isEnabled = true
                     }
                 }
             }
@@ -108,10 +127,7 @@ class AddChallengeActivity : AppCompatActivity() {
                     calendar.set(Calendar.YEAR, year)
                     calendar.set(Calendar.MONTH, month)
                     calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                    if (System.currentTimeMillis() > calendar.timeInMillis) {
-                        Toast.makeText(this@AddChallengeActivity, "날짜를 다시 설정하세요.", Toast.LENGTH_SHORT).show()
-                        return
-                    }
+
                     binding.addChallengeStartDateButton.text = "$year ${month + 1} $dayOfMonth"
                     startDate = calendar.timeInMillis
                 }
@@ -130,10 +146,7 @@ class AddChallengeActivity : AppCompatActivity() {
                     calendar.set(Calendar.YEAR, year)
                     calendar.set(Calendar.MONTH, month)
                     calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                    if (System.currentTimeMillis() > calendar.timeInMillis) {
-                        Toast.makeText(this@AddChallengeActivity, "날짜를 다시 설정하세요.", Toast.LENGTH_SHORT).show()
-                        return
-                    }
+
                     binding.addChallengeEndDateButton.text = "$year ${month + 1} $dayOfMonth"
                     endDate = calendar.timeInMillis
                 }
@@ -142,11 +155,25 @@ class AddChallengeActivity : AppCompatActivity() {
         }
 
         binding.addChallengeTimeButton.setOnClickListener {
+            TimePickerDialog(this, object: TimePickerDialog.OnTimeSetListener{
+                override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+                    alarmAmPm = hourOfDay >= 11
+                    alarmTime = if (hourOfDay > 12) hourOfDay-12 else hourOfDay
+                    alarmMinute = minute
 
+                    val amPmText = if (alarmAmPm) "오후" else "오전"
+                    val timeText = if (alarmTime < 10 && alarmTime > 0) "0$alarmTime" else if (alarmTime == 0) "12" else alarmTime.toString()
+                    val minuteText = if (alarmMinute < 10) "0$alarmMinute" else "${alarmMinute}"
+
+                    binding.addChallengeTimeButton.text = "$amPmText $timeText : $minuteText"
+                }
+
+            }, 0, 0, false).show()
         }
 
         binding.addChallengeTimeCheckBox.setOnCheckedChangeListener { _, isChecked ->
             isAlarmOn = isChecked
+            binding.addChallengeTimeButton.isEnabled = isAlarmOn
         }
 
         binding.addChallengeHideCheckBox.setOnCheckedChangeListener { _, isChecked ->
@@ -155,9 +182,9 @@ class AddChallengeActivity : AppCompatActivity() {
     }
 
     private fun makeDirectory(isHideOn: Boolean, dirName: String) {
-        var mkName = if (isHideOn) ".$dirName" else "$dirName"
+        val mkName = if (isHideOn) ".$dirName" else dirName
 
-        val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString() + File.separator + "$APP_NAME" + File.separator + "$mkName"
+        val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString() + File.separator + APP_NAME + File.separator + mkName
         val file = File(path)
         if (!file.mkdirs()) {
             Toast.makeText(this, "폴더생성 에러", Toast.LENGTH_SHORT).show()
